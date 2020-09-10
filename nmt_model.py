@@ -15,7 +15,7 @@ import torch.nn as nn
 import torch.nn.utils
 import torch.nn.functional as F
 from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
-
+from vocab import Vocab
 from model_embeddings import ModelEmbeddings
 Hypothesis = namedtuple('Hypothesis', ['value', 'score'])
 
@@ -26,7 +26,7 @@ class NMT(nn.Module):
         - Unidirection LSTM Decoder
         - Global Attention Model (Luong, et al. 2015)
     """
-    def __init__(self, embed_size, hidden_size, vocab, dropout_rate=0.2):
+    def __init__(self, embed_size: int, hidden_size: int, vocab: Vocab, dropout_rate=0.2):
         """ Init NMT Model.
 
         @param embed_size (int): Embedding size (dimensionality)
@@ -435,8 +435,8 @@ class NMT(nn.Module):
             contiuating_hyp_scores = (hyp_scores.unsqueeze(1).expand_as(log_p_t) + log_p_t).view(-1)
             top_cand_hyp_scores, top_cand_hyp_pos = torch.topk(contiuating_hyp_scores, k=live_hyp_num)
 
-            prev_hyp_ids = torch.true_divide(top_cand_hyp_pos, len(self.vocab.tgt))
-            hyp_word_ids = torch.fmod(top_cand_hyp_pos, len(self.vocab.tgt))
+            prev_hyp_ids = torch.floor_divide(top_cand_hyp_pos, len(self.vocab.tgt))
+            hyp_word_ids = top_cand_hyp_pos % len(self.vocab.tgt)
 
             new_hypotheses = []
             live_hyp_ids = []
