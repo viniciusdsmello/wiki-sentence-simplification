@@ -16,7 +16,7 @@ Usage:
 Options:
     -h --help                               show this screen.
     --cuda                                  use GPU
-    --cuda-device                           GPU ID [default: 0]
+    --cuda-device=<int>                     GPU ID [default: 0]
     --train-src=<file>                      train source file
     --train-tgt=<file>                      train target file
     --dev-src=<file>                        dev source file
