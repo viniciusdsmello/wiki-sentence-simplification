@@ -23,9 +23,10 @@ def remove_extra_whitespace_tabs(text):
 def to_lowercase(text):
     return text.lower()
 
-def preprocessing(text):
-    x = remove_html_tags(str(text))
+def preprocessing(x):
+    x = remove_html_tags(str(x))
     x = remove_special_characters(x)
     x = remove_accented_chars(x)
     x = remove_extra_whitespace_tabs(x)
     x = to_lowercase(x)
+    return x
