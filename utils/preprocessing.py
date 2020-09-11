@@ -24,7 +24,7 @@ def to_lowercase(text):
     return text.lower()
 
 def preprocessing(text):
-    x = remove_html_tags(x)
+    x = remove_html_tags(text)
     x = remove_special_characters(x)
     x = remove_accented_chars(x)
     x = remove_extra_whitespace_tabs(x)
