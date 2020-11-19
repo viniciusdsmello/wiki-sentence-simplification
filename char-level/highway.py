@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-CS224N 2018-19: Homework 5
-"""
-
-### YOUR CODE HERE for part 1h
-
 import math
 import unittest
 import torch
@@ -66,5 +60,5 @@ class HighwaySanityChecks(unittest.TestCase):
 
         self.assertTrue(torch.allclose(x_conv_out, x_word_emb))
 
-### END YOUR CODE 
+ 
 

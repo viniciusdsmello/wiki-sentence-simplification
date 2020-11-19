@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-CS224N 2018-19: Homework 5
-"""
 
-### YOUR CODE HERE for part 1i
 
 import math
 import unittest
@@ -39,5 +35,5 @@ class CNNSanityChecks(unittest.TestCase):
         self.assertEqual(x_conv_out.shape, (batch_size, word_embed_size))
 
 
-### END YOUR CODE
+
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-"""
-CS224N 2018-19: Homework 5
-"""
-
 import torch
 import torch.nn as nn
 
@@ -16,7 +11,7 @@ class CharDecoder(nn.Module):
         @param char_embedding_size (int): dimensionality of character embeddings
         @param target_vocab (VocabEntry): vocabulary for the target language. See vocab.py for documentation.
         """
-        ### YOUR CODE HERE for part 2a
+        
         ###      - Initialize the following variables:
         ###        self.charDecoder: LSTM. Please use nn.LSTM() to construct this.
         ###        self.char_output_projection: Linear layer, called W_{dec} and b_{dec} in the PDF
@@ -35,7 +30,7 @@ class CharDecoder(nn.Module):
         self.decoder_char_embed = nn.Embedding(len(target_vocab.char2id), char_embedding_size, pad_token_idx)
         self.target_vocab = target_vocab
 
-        ### END YOUR CODE
+        
 
 
     
@@ -48,14 +43,14 @@ class CharDecoder(nn.Module):
         @returns scores: called s_t in the PDF, shape (length, batch, self.vocab_size)
         @returns dec_char_hidden: internal state of the LSTM after reading the input characters. A tuple of two tensors of shape (1, batch, hidden_size)
         """
-        ### YOUR CODE HERE for part 2b
+        
 
         x_embed = self.decoder_char_embed.forward(char_sequence)
         hiddens, dec_char_hidden = self.char_decoder.forward(x_embed, dec_hidden)
         scores = self.char_output_projection.forward(hiddens)
         return scores, dec_char_hidden
 
-        ### END YOUR CODE 
+         
 
 
     def train_forward(self, char_sequence, dec_hidden=None):
@@ -66,7 +61,7 @@ class CharDecoder(nn.Module):
 
         @returns The cross-entropy loss, computed as the *sum* of cross-entropy losses of all the words in the batch.
         """
-        ### YOUR CODE HERE for part 2c
+        
         ###
         ### Hint: - Make sure padding characters do not contribute to the cross-entropy loss.
         ###       - char_sequence corresponds to the sequence x_1 ... x_{n+1} from the handout (e.g., <START>,m,u,s,i,c,<END>).
@@ -83,7 +78,7 @@ class CharDecoder(nn.Module):
 
         return loss
 
-        ### END YOUR CODE
+        
 
     def decode_greedy(self, initial_states, device, max_length=21):
         """ Greedy decoding
@@ -95,7 +90,7 @@ class CharDecoder(nn.Module):
                               The decoded strings should NOT contain the start-of-word and end-of-word characters.
         """
 
-        ### YOUR CODE HERE for part 2d
+        
         ### Hints:
         ###      - Use target_vocab.char2id and target_vocab.id2char to convert between integers and characters
         ###      - Use torch.tensor(..., device=device) to turn a list of character indices into a tensor.
@@ -127,5 +122,5 @@ class CharDecoder(nn.Module):
 
         return decoded_words
 
-        ### END YOUR CODE
+        
 

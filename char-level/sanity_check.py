@@ -1,18 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-CS224N 2018-19: Homework 5
-sanity_check.py: sanity checks for assignment 5
-Usage:
-    sanity_check.py 1e
-    sanity_check.py 1f
-    sanity_check.py 1j
-    sanity_check.py 2a
-    sanity_check.py 2b
-    sanity_check.py 2c
-    sanity_check.py 2d
-"""
+
 import json
 import math
 import pickle

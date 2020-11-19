@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-CS224N 2018-19: Homework 5
-nmt.py: NMT Model
-Pencheng Yin <pcyin@cs.cmu.edu>
-Sahil Chopra <schopra8@stanford.edu>
-"""
 
 import math
 from typing import List
@@ -30,16 +24,6 @@ def pad_sents_char(sents, char_pad_token):
     # Words longer than 21 characters should be truncated
     max_word_length = 21 
 
-    ### YOUR CODE HERE for part 1f
-    ###     Perform necessary padding to the sentences in the batch similar to the pad_sents()
-    ###     method below using the padding character from the arguments. You should ensure all 
-    ###     sentences have the same number of words and each word has the same number of 
-    ###     characters. 
-    ###     Set padding words to a `max_word_length` sized vector of padding characters.  
-    ###
-    ###     You should NOT use the method `pad_sents()` below because of the way it handles 
-    ###     padding and unknown words.
-
     max_sent_len = max(len(sent) for sent in sents)
     pad_word = [char_pad_token] * max_word_length
 
@@ -52,8 +36,6 @@ def pad_sents_char(sents, char_pad_token):
             sent_padded += [word_padded]
         sent_padded += [pad_word] * (max_sent_len - len(sent))
         sents_padded += [sent_padded]
-
-    ### END YOUR CODE
 
     return sents_padded
 

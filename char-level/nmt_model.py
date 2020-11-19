@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-CS224N 2018-19: Homework 5
-nmt_model.py: NMT Model
-Pencheng Yin <pcyin@cs.cmu.edu>
-Sahil Chopra <schopra8@stanford.edu>
-"""
 from collections import namedtuple
 import sys
 from typing import List, Tuple, Dict, Set, Union
@@ -77,24 +71,6 @@ class NMT(nn.Module):
         source_lengths = [len(s) for s in source]
 
         # Convert list of lists into tensors
-
-        ## A4 code
-        # source_padded = self.vocab.src.to_input_tensor(source, device=self.device)   # Tensor: (src_len, b)
-        # target_padded = self.vocab.tgt.to_input_tensor(target, device=self.device)   # Tensor: (tgt_len, b)
- 
-        # enc_hiddens, dec_init_state = self.encode(source_padded, source_lengths)
-        # enc_masks = self.generate_sent_masks(enc_hiddens, source_lengths)
-        # combined_outputs = self.decode(enc_hiddens, enc_masks, dec_init_state, target_padded)
-        ## End A4 code
-        
-        ### YOUR CODE HERE for part 1k
-        ###     Modify the code lines above as needed to fetch the character-level tensor
-        ###     to feed into encode() and decode(). You should:
-        ###     - Keep `target_padded` from A4 code above for predictions
-        ###     - Add `source_padded_chars` for character level padded encodings for source
-        ###     - Add `target_padded_chars` for character level padded encodings for target
-        ###     - Modify calls to encode() and decode() to use the character level encodings
-
         target_padded = self.vocab.tgt.to_input_tensor(target, device=self.device)
         source_padded_chars = self.vocab.src.to_input_tensor_char(source, device=self.device)
         target_padded_chars = self.vocab.tgt.to_input_tensor_char(target, device=self.device)
@@ -103,7 +79,7 @@ class NMT(nn.Module):
         enc_masks = self.generate_sent_masks(enc_hiddens, source_lengths)
         combined_outputs = self.decode(enc_hiddens, enc_masks, dec_init_state, target_padded_chars)
 
-        ### END YOUR CODE
+        
 
         P = F.log_softmax(self.target_vocab_projection(combined_outputs), dim=-1)
 
@@ -112,8 +88,7 @@ class NMT(nn.Module):
 
         # Compute log probability of generating true target words
         target_gold_words_log_prob = torch.gather(P, index=target_padded[1:].unsqueeze(-1), dim=-1).squeeze(-1) * target_masks[1:]
-        scores = target_gold_words_log_prob.sum() # mhahn2 Small modification from A4 code.
-
+        scores = target_gold_words_log_prob.sum()
 
 
         if self.char_decoder is not None:
@@ -123,8 +98,8 @@ class NMT(nn.Module):
             target_chars = target_padded_chars[1:].reshape(-1, max_word_len)
             target_outputs = combined_outputs.view(-1, 256)
     
-            target_chars_oov = target_chars #torch.index_select(target_chars, dim=0, index=oovIndices)
-            rnn_states_oov = target_outputs #torch.index_select(target_outputs, dim=0, index=oovIndices)
+            target_chars_oov = target_chars
+            rnn_states_oov = target_outputs
             oovs_losses = self.char_decoder.train_forward(target_chars_oov.t(), (rnn_states_oov.unsqueeze(0), rnn_states_oov.unsqueeze(0)))
             scores = scores - oovs_losses
     
@@ -270,9 +245,6 @@ class NMT(nn.Module):
                 value: List[str]: the decoded target sentence, represented as a list of words
                 score: float: the log-likelihood of the target sentence
         """
-        ## A4 code
-        # src_sents_var = self.vocab.src.to_input_tensor([src_sent], self.device)
-        ## End A4 code
 
         src_sents_var = self.vocab.src.to_input_tensor_char([src_sent], self.device)
 
@@ -302,11 +274,6 @@ class NMT(nn.Module):
                                                                            src_encodings_att_linear.size(1),
                                                                            src_encodings_att_linear.size(2))
 			
-            ## A4 code
-            # y_tm1 = self.vocab.tgt.to_input_tensor(list([hyp[-1]] for hyp in hypotheses), device=self.device)
-            # y_t_embed = self.model_embeddings_target(y_tm1)
-            ## End A4 code
-
             y_tm1 = self.vocab.tgt.to_input_tensor_char(list([hyp[-1]] for hyp in hypotheses), device=self.device)
             y_t_embed = self.model_embeddings_target(y_tm1)
             y_t_embed = torch.squeeze(y_t_embed, dim=0)
